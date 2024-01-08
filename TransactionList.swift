@@ -118,6 +118,7 @@ struct EditItemView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var editedTitle: String
     @State private var editedAmount: String
+    @State private var editedDate: Date
     @FocusState private var isKeyBoardActive: Bool
     @State private var showMessage = false
     
@@ -128,6 +129,7 @@ struct EditItemView: View {
         self.transaction = transaction
         _editedTitle = State(initialValue: transaction.title)
         _editedAmount = State(initialValue: String(transaction.amount))
+        _editedDate = State(initialValue: transaction.date)
     }
     
     var body: some View {
@@ -145,6 +147,7 @@ struct EditItemView: View {
                             }
                         }
                     }
+                DatePicker("日付", selection: $editedDate, in: ...Date(), displayedComponents: .date)
             }
             
             Section {
@@ -176,6 +179,7 @@ struct EditItemView: View {
             try realm.write {
                 transaction.title = editedTitle
                 transaction.amount = editedAmount
+                transaction.date = editedDate
             }
             
 //            transactionsManager.transactions = realm.objects(Transaction.self)
